@@ -1,0 +1,47 @@
+.contenedorInputFormulario{
+    width: 100%;
+}
+
+div.ajustadoAtextArea{
+    height: 3em;
+    display: block;
+}
+
+textarea.inputModificar{
+    box-sizing: border-box;
+    position: relative;  
+    height: 90%;
+}
+
+.inputModificar{
+    width: 50%;
+    margin: 1px;
+    text-align: left;
+    float: right;
+
+    border-radius: 11px 11px 11px 11px;
+    -moz-border-radius: 11px 11px 11px 11px;
+    -webkit-border-radius: 11px 11px 11px 11px;
+    border: 1px solid #000000; 
+}
+
+button{
+    float: left;
+    padding: 0.5em;
+    margin-top: 4px;
+    cursor: pointer;
+ 
+    border-radius: 11px 11px 11px 11px;
+    -moz-border-radius: 11px 11px 11px 11px;
+    -webkit-border-radius: 11px 11px 11px 11px;
+    border: 1px solid #c3deea;       
+}
+
+.btn_guardar_cambios{
+    background-color: #c3deea;
+}
+
+.btn_eliminar{
+    background-color: #f56a65;
+    margin-left: 1em;
+}
