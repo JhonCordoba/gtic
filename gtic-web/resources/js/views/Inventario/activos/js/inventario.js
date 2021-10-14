@@ -4,21 +4,24 @@ import { llenarSelect } from "../../../../helpers/selects.js";
 export default {
     name: "ActivosView",
     methods: {
-
         listarInventario(numero_pagina) {
             $.ajax({
                 headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    Authorization: `Bearer ${localStorage.getItem("token_auth_api")}`
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
                 },
                 url: "inventario?page=" + numero_pagina,
                 method: "GET",
                 success: function(result, status, xhr) {
                     let numero_elemento = 1;
                     $("#cuerpo_tabla_inventario").empty();
-        
+
                     console.log(result);
-        
+
                     result.forEach(function(element, idx) {
                         //si estamos en el último elmento, no hacemos la iteración porque estamos en los links de pagination
                         if (idx !== result.length - 1) {
@@ -81,8 +84,11 @@ export default {
                                 element[0].cada_cuantos_dias_mantenimiento +
                                 '"data-es_computador="' +
                                 element[0].es_computador;
-        
-                            if (element[0].es_computador === 1 && element[1] != null) {
+
+                            if (
+                                element[0].es_computador === 1 &&
+                                element[1] != null
+                            ) {
                                 elemento_columna +=
                                     '"data-nombre_computador="' +
                                     element[1].nombre_equipo +
@@ -99,11 +105,12 @@ export default {
                                     '"data-capacidad_almacenamiento="' +
                                     element[1].capacidad_almacenamiento +
                                     '"data-cantidad_tarjeta_red_inalambrica="' +
-                                    element[1].cantidad_tarjeta_red_inalambrica +
+                                    element[1]
+                                        .cantidad_tarjeta_red_inalambrica +
                                     '"data-cantidad_tarjeta_red_alambrica="' +
                                     element[1].cantidad_tarjeta_red_alambrica;
                             }
-        
+
                             elemento_columna +=
                                 '" >info</i></td>' +
                                 '<td><i class="material-icons" title="Editar activo" data-toggle="modal" data-target="#modalSGT" data-id_metodo="editar_activo"' +
@@ -143,8 +150,11 @@ export default {
                                 element[0].cada_cuantos_dias_mantenimiento +
                                 '"data-es_computador="' +
                                 element[0].es_computador;
-        
-                            if (element[0].es_computador === 1 && element[1] != null) {
+
+                            if (
+                                element[0].es_computador === 1 &&
+                                element[1] != null
+                            ) {
                                 elemento_columna +=
                                     '"data-nombre_computador="' +
                                     element[1].nombre_equipo +
@@ -161,22 +171,29 @@ export default {
                                     '"data-capacidad_almacenamiento="' +
                                     element[1].capacidad_almacenamiento +
                                     '"data-cantidad_tarjeta_red_inalambrica="' +
-                                    element[1].cantidad_tarjeta_red_inalambrica +
+                                    element[1]
+                                        .cantidad_tarjeta_red_inalambrica +
                                     '"data-cantidad_tarjeta_red_alambrica="' +
                                     element[1].cantidad_tarjeta_red_alambrica +
                                     '"data-numero_inventario="' +
                                     element[1].id;
                             }
-        
+
                             elemento_columna += '" >edit</i></td>' + "</tr>";
-        
-                            $("#cuerpo_tabla_inventario").append(elemento_columna);
-        
+
+                            $("#cuerpo_tabla_inventario").append(
+                                elemento_columna
+                            );
+
                             numero_elemento++;
                         }
                     });
-        
-                    for (let i = 1; i <= result[result.length - 1].last_page; i++) {
+
+                    for (
+                        let i = 1;
+                        i <= result[result.length - 1].last_page;
+                        i++
+                    ) {
                         $("#paginacion_inventario").append(
                             "<li class='list-group-item' style='float: left; cursor: pointer;' >" +
                                 i +
@@ -184,7 +201,7 @@ export default {
                         );
                     }
                 },
-        
+
                 error: function(xhr) {
                     console.log(
                         "Request Status: " +
@@ -197,103 +214,111 @@ export default {
                 }
             });
         },
-        
+
         mostrarMasInformacionDeActivo(e) {
             $("#modalSGTbody").empty();
-        
+
             $("#modalSGTtitle").text(
                 "Más información - " + $(e.relatedTarget).data("nombre")
             );
             $("#modalSGTbody").append("<table>");
-        
+
             /////////////////table head//////////////
             $("#modalSGTbody").append("<thead>");
             $("#modalSGTbody").append("<tr>");
-        
+
             $("#modalSGTbody").append("<th scope='col'>Propiedad");
             $("#modalSGTbody").append("</th>");
-        
+
             $("#modalSGTbody").append("<th scope='col'>Valor");
             $("#modalSGTbody").append("</th>");
-        
+
             $("#modalSGTbody").append("</tr>");
             $("#modalSGTbody").append("</thead>");
             ////////////////////////////////////////
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Serial del activo: </td>");
             $("#modalSGTbody").append(
                 "<td>" + $(e.relatedTarget).data("serial") + "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Fecha de Aceptación: </td>");
             $("#modalSGTbody").append(
                 "<td>" + $(e.relatedTarget).data("fecha_aceptacion") + "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Costo Inicial: </td>");
             $("#modalSGTbody").append(
                 "<td>" + $(e.relatedTarget).data("costo_inicial") + "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Datos del Proveedor: </td>");
             $("#modalSGTbody").append(
                 "<td>" + $(e.relatedTarget).data("datos_proveedor") + "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Fecha fin garantía: </td>");
             $("#modalSGTbody").append(
                 "<td>" + $(e.relatedTarget).data("fecha_fin_garantia") + "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Número Factura: </td>");
             $("#modalSGTbody").append(
                 "<td>" + $(e.relatedTarget).data("numero_factura") + "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Fecha de registro: </td>");
             $("#modalSGTbody").append(
-                "<td>" + $(e.relatedTarget).data("fecha_ingreso_al_sistema") + "</td>"
+                "<td>" +
+                    $(e.relatedTarget).data("fecha_ingreso_al_sistema") +
+                    "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
             $("#modalSGTbody").append("<td>Último mantenimiento: </td>");
             $("#modalSGTbody").append(
-                "<td>" + $(e.relatedTarget).data("ultimo_mantenimiento") + "</td>"
+                "<td>" +
+                    $(e.relatedTarget).data("ultimo_mantenimiento") +
+                    "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             $("#modalSGTbody").append("<tr>");
-            $("#modalSGTbody").append("<td>Periodo mantenimiento (días): </td>");
+            $("#modalSGTbody").append(
+                "<td>Periodo mantenimiento (días): </td>"
+            );
             $("#modalSGTbody").append(
                 "<td>" +
                     $(e.relatedTarget).data("cada_cuantos_dias_mantenimiento") +
                     "</td>"
             );
             $("#modalSGTbody").append("</tr>");
-        
+
             //Si es un computador mostramos sus propiedades:
             if ($(e.relatedTarget).data("es_computador") === 1) {
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>Nombre Computador: </td>");
                 $("#modalSGTbody").append(
-                    "<td>" + $(e.relatedTarget).data("nombre_computador") + "</td>"
+                    "<td>" +
+                        $(e.relatedTarget).data("nombre_computador") +
+                        "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>Tipo Computador: </td>");
                 $("#modalSGTbody").append(
@@ -302,63 +327,69 @@ export default {
                         "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>Dirección MAC: </td>");
                 $("#modalSGTbody").append(
                     "<td>" + $(e.relatedTarget).data("mac_address") + "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>Dirección IP: </td>");
                 $("#modalSGTbody").append(
                     "<td>" + $(e.relatedTarget).data("ip_address") + "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>Puerta de enlace: </td>");
                 $("#modalSGTbody").append(
                     "<td>" + $(e.relatedTarget).data("ip_gateway") + "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>Cantidad RAM (MegaByte): </td>");
                 $("#modalSGTbody").append(
                     "<td>" + $(e.relatedTarget).data("capacidad_ram") + "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
-                $("#modalSGTbody").append("<td>Capacidad Almacenamiento (GB): </td>");
+                $("#modalSGTbody").append(
+                    "<td>Capacidad Almacenamiento (GB): </td>"
+                );
                 $("#modalSGTbody").append(
                     "<td>" +
                         $(e.relatedTarget).data("capacidad_almacenamiento") +
                         "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>NIC inalambricas: </td>");
                 $("#modalSGTbody").append(
                     "<td>" +
-                        $(e.relatedTarget).data("cantidad_tarjeta_red_inalambrica") +
+                        $(e.relatedTarget).data(
+                            "cantidad_tarjeta_red_inalambrica"
+                        ) +
                         "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
-        
+
                 $("#modalSGTbody").append("<tr>");
                 $("#modalSGTbody").append("<td>NIC alambricas: </td>");
                 $("#modalSGTbody").append(
                     "<td>" +
-                        $(e.relatedTarget).data("cantidad_tarjeta_red_alambrica") +
+                        $(e.relatedTarget).data(
+                            "cantidad_tarjeta_red_alambrica"
+                        ) +
                         "</td>"
                 );
                 $("#modalSGTbody").append("</tr>");
             }
-        
+
             $("#modalSGTbody").append(
                 "<hr/><button class='btn_guardar_cambios' id='btn_listarAnexos' value='" +
                     $(e.relatedTarget).data("id_activo") +
@@ -366,42 +397,44 @@ export default {
             );
 
             let this_context_component = this;
-        
+
             $("#btn_listarAnexos").click(function(event) {
                 let id_activo = event.target.value;
                 this_context_component.listarAnexosDelActivo(id_activo);
             });
-        
+
             $("#modalSGTbody").append("</table>");
         },
-        
+
         listarAnexosDelActivo(id_activo) {
             $("#modalSGTbody").empty();
-        
+
             $("#modalSGTtitle").text("Anexos del activo");
             $("#modalSGTbody").append("<table>");
-        
+
             /////////////////table head//////////////
             $("#modalSGTbody").append("<thead>");
             $("#modalSGTbody").append("<tr>");
-        
+
             $("#modalSGTbody").append("<th scope='col'>Nombre del archivo");
             $("#modalSGTbody").append("</th>");
-        
+
             $("#modalSGTbody").append("<th scope='col'>");
             $("#modalSGTbody").append("</th>");
-        
+
             $("#modalSGTbody").append("<th scope='col'>");
             $("#modalSGTbody").append("</th>");
-        
+
             $("#modalSGTbody").append("</tr>");
             $("#modalSGTbody").append("</thead>");
             ////////////////////////////////////////
-        
+
             $.ajax({
                 url: "/activos/anexos",
-                headers:{
-                    Authorization: `Bearer ${localStorage.getItem("token_auth_api")}`
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
                 },
                 data: { id_activo: id_activo },
                 method: "GET",
@@ -410,11 +443,11 @@ export default {
                         $("#modalSGTtitle").text("Este activo no tiene anexos");
                         $("#modalSGTbody").empty();
                     }
-        
+
                     result.forEach(function(element) {
                         let fila =
                             "<tr style='box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.75);'>";
-        
+
                         fila += "<td>" + element[0] + "</td>";
                         fila +=
                             "<td> <a href='/activos/anexo/" +
@@ -422,16 +455,17 @@ export default {
                             "/" +
                             element[0] +
                             "'> <i class='material-icons'>cloud_download</i> </a> </td>";
-                        fila += '<td> <i class="material-icons">delete</i> </td>';
-        
+                        fila +=
+                            '<td> <i class="material-icons">delete</i> </td>';
+
                         fila += "</tr>";
-        
+
                         $("#modalSGTbody").append(fila);
                     });
-        
+
                     $("#modalSGTbody").append("</table>");
                 },
-        
+
                 error: function(xhr) {
                     console.log(
                         "Request Status: " +
@@ -444,11 +478,11 @@ export default {
                 }
             });
         },
-        
+
         listarInventarioFiltrado(inventario_filtrado) {
             let numero_elemento = 1;
             $("#cuerpo_tabla_inventario").empty();
-        
+
             inventario_filtrado.forEach(function(element) {
                 let elemento_columna =
                     "<tr>" +
@@ -509,7 +543,7 @@ export default {
                     element[0].cada_cuantos_dias_mantenimiento +
                     '"data-es_computador="' +
                     element[0].es_computador;
-        
+
                 if (null != element[1] && element[0].es_computador === 1) {
                     elemento_columna +=
                         '"data-nombre_computador="' +
@@ -531,7 +565,7 @@ export default {
                         '"data-cantidad_tarjeta_red_alambrica="' +
                         element[1].cantidad_tarjeta_red_alambrica;
                 }
-        
+
                 elemento_columna +=
                     '" >info</i></td>' +
                     '<td><i class="material-icons" title="Editar activo" data-toggle="modal" data-target="#modalSGT" data-id_metodo="editar_activo"' +
@@ -571,7 +605,7 @@ export default {
                     element[0].cada_cuantos_dias_mantenimiento +
                     '"data-es_computador="' +
                     element[0].es_computador;
-        
+
                 if (null != element[1] && element[0].es_computador === 1) {
                     elemento_columna +=
                         '"data-nombre_computador="' +
@@ -595,21 +629,21 @@ export default {
                         '"data-numero_inventario="' +
                         element[1].id;
                 }
-        
+
                 elemento_columna += '" >edit</i></td>' + "</tr>";
-        
+
                 $("#cuerpo_tabla_inventario").append(elemento_columna);
-        
+
                 numero_elemento++;
             });
         },
-        
+
         mostrarFormularioFiltrarInventario() {
             $("#cuerpo_tabla_inventario").empty();
-        
+
             $("#modalSGTbody").empty();
             $("#modalSGTtitle").text("Filtrar");
-        
+
             let formularioFiltrarInventario =
                 "<form id='formularioFiltrarInventario'>" +
                 "<div class='contenedorInputFormulario'>" +
@@ -715,37 +749,50 @@ export default {
                 "<button class='btn_guardar_cambios' id='btn_filtrar_inventario'  type='button'> Filtrar </button>" +
                 "<button class='btn_eliminar' id='btn_cancelar_filtro_inventario'  type='button'> Cancelar </button>" +
                 "</form> ";
-        
+
             $("#modalSGTbody").append(formularioFiltrarInventario);
-        
-            llenarSelect("/oficinas_arreglo_llave_valor", "selectOficinaEditarActivo");
+
+            llenarSelect(
+                "/oficinas_arreglo_llave_valor",
+                "selectOficinaEditarActivo"
+            );
             llenarSelect(
                 "/personas_arreglo_llave_valor",
                 "selectResponsableEditarActivo"
             );
-            llenarSelect("/personas_arreglo_llave_valor", "selectUsuarioEditarActivo");
-            llenarSelect("/estados_arreglo_llave_valor", "selectEstadosEditarActivo");
+            llenarSelect(
+                "/personas_arreglo_llave_valor",
+                "selectUsuarioEditarActivo"
+            );
+            llenarSelect(
+                "/estados_arreglo_llave_valor",
+                "selectEstadosEditarActivo"
+            );
             llenarSelect(
                 "/personas_arreglo_llave_valor",
                 "selectUsuarioSolicitoEditarActivo"
             );
-        
+
             //Enlazamos los eventos DESPUÉS DE CREAR EL FORMULARIO
             let this_context_component = this;
             $("#btn_filtrar_inventario").click(function() {
                 this_context_component.filtrarInventario();
                 $("[data-dismiss=modal]").trigger({ type: "click" });
             });
-        
+
             $("#modalSGT").modal("toggle");
         },
-        
+
         filtrarInventario() {
             let this_context_component = this;
             $.ajax({
                 headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    Authorization: `Bearer ${localStorage.getItem("token_auth_api")}`
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
                 },
                 type: "POST",
                 url: "filtrar_inventario",
@@ -766,13 +813,15 @@ export default {
                 }
             });
         },
-        
+
         mostrarFormularioEditarActivo(e) {
+            console.log($(e.relatedTarget).data("capacidad_ram"));
+
             $("#modalSGTbody").empty();
             $("#modalSGTtitle").text(
                 "Editar activo - " + $(e.relatedTarget).data("nombre")
             );
-        
+
             var formularioEditarActivo =
                 "<form id='formularioEditarActivo'>" +
                 "<input name='id_activo' type='hidden' value='" +
@@ -882,7 +931,7 @@ export default {
                 $(e.relatedTarget).data("fecha_ingreso_al_sistema") +
                 "></input>" +
                 "</div>";
-        
+
             if ($(e.relatedTarget).data("es_computador") === 1) {
                 formularioEditarActivo +=
                     "<div class='contenedorInputFormulario'>" +
@@ -896,13 +945,13 @@ export default {
                     "<select class='inputModificar' name='es_computador'> <option value=1>Sí</option><option selected value=0>No</option>  </select>" +
                     "</div>";
             }
-        
+
             //Si es un computador, mostramos las propiedades del computador:
             if ($(e.relatedTarget).data("es_computador") === 1) {
                 formularioEditarActivo +=
                     "<div class='contenedorInputFormulario'>" +
                     "<label>Nombre Computador</label>" +
-                    "<input class='inputModificar' name='nombre_equipo' value=" +
+                    "<input class='inputModificar' name='nombre_computador' value=" +
                     $(e.relatedTarget).data("nombre_computador") +
                     "></input>" +
                     "</div>" +
@@ -943,7 +992,9 @@ export default {
                     "<div class='contenedorInputFormulario'>" +
                     "<label>Cantidad NIC inalambricas</label>" +
                     "<input class='inputModificar' name='cantidad_tarjeta_red_inalambrica' value=" +
-                    $(e.relatedTarget).data("cantidad_tarjeta_red_inalambrica") +
+                    $(e.relatedTarget).data(
+                        "cantidad_tarjeta_red_inalambrica"
+                    ) +
                     "></input>" +
                     "</div>" +
                     "<div class='contenedorInputFormulario'>" +
@@ -953,7 +1004,7 @@ export default {
                     "></input>" +
                     "</div>";
             }
-        
+
             formularioEditarActivo +=
                 "<div class='contenedorInputFormulario'>" +
                 "<label>¿Solicitado por?</label>" +
@@ -964,36 +1015,50 @@ export default {
                 "<button style='margin-left: 0.2em;' class='btn_guardar_cambios' id='btn_mostrarFormulario_addAnexo' value='" +
                 $(e.relatedTarget).data("id") +
                 "' type='button'> Anexar archivo </button>" +
-                "<button class='btn_eliminar' id='btn_eliminar_activo'  type='button'> Eliminar Activo </button>" +
+                "<button class='btn_guardar_cambios' id='btn_listar_componentes_activo' style='margin-left: 0.2em;'  value='" +
+                $(e.relatedTarget).data("id") +
+                "' type='button'> Componentes </button>" +
+                "<button class='btn_eliminar' id='btn_eliminar_activo'  type='button'> Eliminar</button>" +
                 "</form> ";
-        
+
             $("#modalSGTbody").append(formularioEditarActivo);
-        
-            llenarSelect("/oficinas_arreglo_llave_valor", "selectOficinaEditarActivo");
-        
+
+            llenarSelect(
+                "/oficinas_arreglo_llave_valor",
+                "selectOficinaEditarActivo"
+            );
+
             llenarSelect(
                 "/personas_arreglo_llave_valor",
                 "selectResponsableEditarActivo"
             );
-            llenarSelect("/personas_arreglo_llave_valor", "selectUsuarioEditarActivo");
-            llenarSelect("/estados_arreglo_llave_valor", "selectEstadosEditarActivo");
+            llenarSelect(
+                "/personas_arreglo_llave_valor",
+                "selectUsuarioEditarActivo"
+            );
+            llenarSelect(
+                "/estados_arreglo_llave_valor",
+                "selectEstadosEditarActivo"
+            );
             llenarSelect(
                 "/personas_arreglo_llave_valor",
                 "selectUsuarioSolicitoEditarActivo"
             );
-        
+
             //Enlazamos los eventos DESPUÉS DE CREAR EL FORMULARIO
             let this_context_component = this;
             $("#btn_guardar_cambios_activos").click(function() {
                 this_context_component.guardarModificacionesActivos();
             });
-        
+
             $("#btn_mostrarFormulario_addAnexo").click(function(event) {
                 let id_activo_anexar = event.target.value;
-        
+
                 $("#modalSGTbody").empty();
-                $("#modalSGTtitle").text("Anexar archivo a la información del activo");
-        
+                $("#modalSGTtitle").text(
+                    "Anexar archivo a la información del activo"
+                );
+
                 let formularioAnexarArchivo =
                     '<form enctype="multipart/form-data" method="post" action="/activos/anexar_archivo">' +
                     '<input type="hidden"  name="_token" value=" ' +
@@ -1006,24 +1071,116 @@ export default {
                     '<input type="file"  name="archivo"/>' +
                     '<input type="submit" value="Subir" class="button" >' +
                     "</form>";
-        
+
                 $("#modalSGTbody").append(formularioAnexarArchivo);
             });
+
+            $("#btn_listar_componentes_activo").click(function(event) {
+                var idActivoCompuesto = event.target.value;
+
+                $.ajax({
+                    url: "/activo/componentes",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token_auth_api"
+                        )}`
+                    },
+                    data: { id_activo: idActivoCompuesto },
+                    method: "GET",
+                    success: function(result, status, xhr) {
+                        let listaDeComponentes =
+                            "<h3> Componentes del activo: </h3>" +
+                            "<table>" +
+                            "<tr> <th> Nombre </th> <th> # Inventario </th> <th> # Serial </th>  <th> quitar </th>  </tr>";
+
+                        result.forEach(function(element) {
+                            let fila =
+                                "<tr style='box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.75);'>";
+
+                            fila += "<td>" + element.nombre + "</td>";
+                            fila +=
+                                "<td>" + element.numero_inventario + "</td>";
+                            fila += "<td>" + element.numero_serial + "</td>";
+
+                            fila +=
+                                "<td> <a href='/activo/" +
+                                idActivoCompuesto +
+                                "/eliminar-componente/" +
+                                element.id +
+                                "'> <i class='material-icons'>delete</i> </a> </td>";
+
+                            fila += "</tr>";
+
+                            listaDeComponentes += fila;
+                        });
+
+                        listaDeComponentes += "</table>";
+
+                        if (result.length == 0) {
+                            listaDeComponentes =
+                                "El activo no tiene componentes todavía.";
+                        }
+
+                        $("#modalSGTbody").empty();
+                        $("#modalSGTtitle").text(
+                            "Editar componentes del activo"
+                        );
+
+                        let formulario =
+                            '<form enctype="multipart/form-data" method="post" action="/activos/agregar-componente" style="text-align: center">' +
+                            '<input type="hidden"  name="_token" value=" ' +
+                            $('meta[name="csrf-token"]').attr("content") +
+                            ' ">' +
+                            '<input type="hidden" readonly name="id_activo" value="' +
+                            idActivoCompuesto +
+                            '">' +
+                            "<select data-live-search='true' id='selectNumeroInventario' required  class='selectpicker' multiple name='idActivosComponentes[]'> <option value=null>Número de Inventario</option>  </select>" +
+                            '<button class="btn btn-primary float-right" > Agregar </button>' +
+                            "</form>";
+
+                        llenarSelect(
+                            "/inventario_arreglo_llave_valor",
+                            "selectNumeroInventario"
+                        );
+
+                        $("#modalSGTbody").append(listaDeComponentes);
+                        $("#modalSGTbody").append(formulario);
+                    },
+
+                    error: function(xhr) {
+                        console.log(
+                            "Request Status: " +
+                                xhr.status +
+                                " Status Text: " +
+                                xhr.statusText +
+                                " " +
+                                xhr.responseText
+                        );
+                    }
+                });
+            });
         },
-        
+
         guardarModificacionesActivos() {
             if ($(selectUsuarioSolicitoEditarActivo).val() == "null") {
                 alert("debes llenar el campo: ¿Solicitado por?");
-        
-                $(selectUsuarioSolicitoEditarActivo).css("background-color", "red");
-        
+
+                $(selectUsuarioSolicitoEditarActivo).css(
+                    "background-color",
+                    "red"
+                );
+
                 return;
             }
-        
+            var inventarioComponentThis = this;
             $.ajax({
                 headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    Authorization: `Bearer ${localStorage.getItem("token_auth_api")}`
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
                 },
                 type: "PUT",
                 url: "activo",
@@ -1032,7 +1189,7 @@ export default {
                     $("#modalSGTbody").empty();
                     $("#modalSGTtitle").text("Editar Activo");
                     $("#modalSGTbody").text(response);
-                    location.reload();
+                    inventarioComponentThis.listarInventario();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus);
@@ -1045,12 +1202,11 @@ export default {
                 }
             });
         },
-        
-        
+
         mostrarFormularioCrearActivo() {
             $("#modalSGTbody").empty();
             $("#modalSGTtitle").text("Crear activo");
-        
+
             var formularioCrearActivo =
                 "<form id='formularioCrearActivo'>" +
                 "<div class='contenedorInputFormulario'>" +
@@ -1138,32 +1294,41 @@ export default {
                 "<hr/>" +
                 "<button class='btn_guardar_cambios' id='btn_guardar_activo'  type='button'> Guardar </button>" +
                 "</form> ";
-        
+
             $("#modalSGTbody").append(formularioCrearActivo);
-        
-            llenarSelect("/oficinas_arreglo_llave_valor", "selectOficinaEditarActivo");
+
+            llenarSelect(
+                "/oficinas_arreglo_llave_valor",
+                "selectOficinaEditarActivo"
+            );
             llenarSelect(
                 "/personas_arreglo_llave_valor",
                 "selectResponsableEditarActivo"
             );
-            llenarSelect("/personas_arreglo_llave_valor", "selectUsuarioEditarActivo");
-            llenarSelect("/estados_arreglo_llave_valor", "selectEstadosEditarActivo");
+            llenarSelect(
+                "/personas_arreglo_llave_valor",
+                "selectUsuarioEditarActivo"
+            );
+            llenarSelect(
+                "/estados_arreglo_llave_valor",
+                "selectEstadosEditarActivo"
+            );
             llenarSelect(
                 "/personas_arreglo_llave_valor",
                 "selectUsuarioSolicitoEditarActivo"
             );
-        
+
             //Enlazamos los eventos DESPUÉS DE CREAR EL FORMULARIO
             let this_context_component = this;
             $("#btn_guardar_activo").click(function() {
                 this_context_component.guardarActivo();
             });
-        
+
             $("#modalSGT").modal("toggle");
-        
+
             $("#selectEsComputador").on("change", function(e) {
                 $("#inputs_computador").empty();
-        
+
                 if (e.target.value == 1) {
                     //Si cambia a es_un_computador
                     $("#inputs_computador").append(
@@ -1207,12 +1372,16 @@ export default {
                 }
             });
         },
-        
+
         guardarActivo() {
             $.ajax({
                 headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    Authorization: `Bearer ${localStorage.getItem("token_auth_api")}`
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
                 },
                 type: "POST",
                 url: "activos",
@@ -1234,11 +1403,9 @@ export default {
                 }
             });
         }
-        
     },
 
     mounted() {
-
         let this_context_component = this;
 
         this.listarInventario();
@@ -1252,7 +1419,7 @@ export default {
         });
 
         //$("#modalSGT").unbind("shown.bs.modal");
-        $(document).on('show.bs.modal', '#modalSGT', function(e) {
+        $(document).on("show.bs.modal", "#modalSGT", function(e) {
             if (
                 $(e.relatedTarget).data("id_metodo") ===
                 "mas_informacion_activo"
@@ -1268,8 +1435,10 @@ export default {
         $("#btn-getFormulario-subir-activos").on("click", function(e) {
             $.ajax({
                 url: "/formulario_subir_activos",
-                headers:{
-                    Authorization: `Bearer ${localStorage.getItem("token_auth_api")}`
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
                 },
                 method: "GET",
                 success: function(result, status, xhr) {

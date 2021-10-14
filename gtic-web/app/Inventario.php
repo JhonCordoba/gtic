@@ -13,6 +13,7 @@ class Inventario extends Model
 
     public function movimientos()
     {
-		return $this->hasMany('App\Movimientos', 'id_activo');
-    }      
+	  	return $this->hasMany('App\Movimientos', 'id_activo');
+    }   
+    
 }

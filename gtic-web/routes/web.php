@@ -68,9 +68,18 @@ Route::get('/formulario_subir_activos', function(){
 
 })->middleware('jwt.auth');
 
-Route::post('/subir_activos', "InventarioController@registrarActivos")->middleware("jwt.auth", "role:root");
+//TODO: fix the method of query this route, for use the middleware
+//Route::post('/subir_activos', "InventarioController@registrarActivos")->middleware("jwt.auth", "role:root");
+Route::post('/subir_activos', "InventarioController@registrarActivos");
 
 Route::post('/activos', "InventarioController@registrarActivo")->middleware("jwt.auth", "role:root");
+
+Route::get('/activo/componentes',  'InventarioController@getComponentesDeActivo')->middleware('jwt.auth');
+Route::post('/activos/agregar-componente',  'InventarioController@agregarComponente');
+
+
+Route::get('/activo/{id_activo}/eliminar-componente/{id_componente}',  'InventarioController@eliminarComponenteDeActivo');
+
 
 Route::post("/activos/anexar_archivo", "InventarioController@anexar_archivo")->middleware("jwt.auth", "role:root");
 

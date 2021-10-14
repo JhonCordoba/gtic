@@ -16,7 +16,7 @@ class CreateComposicionActivosTable extends Migration
         Schema::create('composicion_activos', function (Blueprint $table) {
 
             $table->integer('id_activo_compuesto');
-            $table->integer('id_activo_componente');
+            $table->integer('id_activo_componente')->unique(); //un componente solo puede ser un componente de un solo activo
             
             $table->primary(['id_activo_compuesto', 'id_activo_componente'], "PK_composicion_activos");
             

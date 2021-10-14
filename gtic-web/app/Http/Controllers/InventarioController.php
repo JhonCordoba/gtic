@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Inventario;
+use App\ComposicionActivos;
 use App\Movimientos;
 use App\Propiedades_computador;
 use App\Http\Controllers\Propiedades_computadorController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\EstadosDeActivosController;
 use Importer;
 use Response;
 use Auth;
+use Error;
 use Illuminate\Support\Facades\Storage;
 
 class InventarioController extends Controller {
@@ -29,10 +31,11 @@ class InventarioController extends Controller {
 
     public function getListaInventario() {
 
+        //TODO: Pagination
         if( $this->usersController->esRoot(Auth::id()) ){
-            $activos = Inventario::paginate(10);
+            $activos = Inventario::all();
         }else{
-            $activos = Inventario::where("id_funcionario_responsable", Auth::id())->paginate(10);
+            $activos = Inventario::where("id_funcionario_responsable", Auth::id())->get();
         }
 
         $propiedadesComputador = new Propiedades_computadorController();
@@ -47,6 +50,7 @@ class InventarioController extends Controller {
             $activo->nombre_estado_de_activo = $this->estadosActivosController->getNombreEstadoDeActivo($activo->id_estado);
 
             $propiedades = $propiedadesComputador->getPropiedadesDelComputador($activo->id);
+
 
             array_push($activosConSusPropiedades, [$activo, $propiedades]);
         }
@@ -224,61 +228,62 @@ class InventarioController extends Controller {
 
             $cantidadActivos = Inventario::all()->count();
 
+
+
             $i = 0;
             try {
 
                 for ($i = 1; $i < sizeof($collection); $i++) {
 
-                    
-                    
+                    if(!$collection[$i][0] && !$collection[$i][1])
+                      throw new Error("debes indicar al menos una de las siguientes propiedades: Número de inventario o Serial");
+
                     $activo = new Inventario();
                     $activo->id = ++$cantidadActivos;
-                    $activo->numero_inventario = $collection[$i][0];
+                    $activo->numero_inventario = $collection[$i][0]? $collection[$i][0] : null;
                     $activo->numero_serial = $collection[$i][1];
                     $activo->nombre = $collection[$i][2];
                     $activo->marca_referencia = $collection[$i][3];
                     $activo->observaciones = $collection[$i][4];
-                    $activo->fecha_aceptacion = $collection[$i][5];
-                    $activo->id_estado = $collection[$i][6];
-                    $activo->id_oficina_ubicacion = $collection[$i][7];
-                    $activo->costo_inicial = $collection[$i][8];
-                    $activo->ultima_revision_estado = $collection[$i][9];
-                    $activo->id_funcionario_responsable = $collection[$i][10];
-                    $activo->id_usuario = $collection[$i][11];
-                    $activo->funciona_correctamente = $collection[$i][12];
+                    $activo->fecha_aceptacion = $collection[1][5]? $collection[1][5] : null;
+                    $activo->id_estado = $collection[$i][6]? $collection[$i][6] : null;
+                    $activo->id_oficina_ubicacion = $collection[$i][7]? $collection[$i][7] : null;
+                    $activo->costo_inicial = $collection[$i][8]? $collection[$i][8] : null;
+                    $activo->ultima_revision_estado =  $collection[$i][9]? $collection[$i][9] : null;
+                    $activo->id_funcionario_responsable = $collection[$i][10]? $collection[$i][10] : null;
+                    $activo->id_usuario = $collection[$i][11]? $collection[$i][11] : null;
+                    $activo->funciona_correctamente =  $collection[$i][12]? $collection[$i][12] : 1;
                     $activo->datos_contacto_proveedor = $collection[$i][13];
-                    $activo->fecha_fin_garantia = $collection[$i][14];
+                    $activo->fecha_fin_garantia = $collection[$i][14]? $collection[$i][14] : null;
                     $activo->numero_factura = $collection[$i][15];
-                    $activo->ultimo_mantenimiento  = $collection[$i][16];
-                    $activo->cada_cuantos_dias_mantenimiento  = $collection[$i][17];
+                    $activo->ultimo_mantenimiento = $collection[$i][16]? $collection[$i][16] : null;
+                    $activo->cada_cuantos_dias_mantenimiento  = $collection[$i][17]? $collection[$i][17] : null;
                     $activo->es_computador = $collection[$i][18];
                     $activo->save();
-                    
-                    
                     
                     //Si es un computador, guardamos las propiedades del computador
                     if ($collection[$i][18] == 1) {
                         $propiedades_computador = new Propiedades_computador();
                         $propiedades_computador->id_activo = $cantidadActivos;
-                        $propiedades_computador->nombre_equipo = $collection[$i][19];
+                        $propiedades_computador->nombre_equipo = $collection[$i][19]? $collection[$i][19] : null;
                         $propiedades_computador->tipo_escritorio_portatil = $collection[$i][20];
-                        $propiedades_computador->MACaddress = $collection[$i][21];
-                        $propiedades_computador->IPaddress = $collection[$i][22];
+                        $propiedades_computador->MACaddress = $collection[$i][21]? $collection[$i][21] : null;
+                        $propiedades_computador->IPaddress = $collection[$i][22]? $collection[$i][22]: null;
                         $propiedades_computador->ip_puerta_enlace = $collection[$i][23];
-                        $propiedades_computador->capacidad_ram = $collection[$i][24];
-                        $propiedades_computador->capacidad_almacenamiento = $collection[$i][25];
-                        $propiedades_computador->cantidad_tarjeta_red_inalambrica = $collection[$i][26];
-                        $propiedades_computador->cantidad_tarjeta_red_alambrica = $collection[$i][27];
+                        $propiedades_computador->capacidad_ram = $collection[$i][24] ? $collection[$i][24] : null;
+                        $propiedades_computador->capacidad_almacenamiento = $collection[$i][25]? $collection[$i][25] : null;
+                        $propiedades_computador->cantidad_tarjeta_red_inalambrica = $collection[$i][26]? $collection[$i][26] : null;
+                        $propiedades_computador->cantidad_tarjeta_red_alambrica = $collection[$i][27]? $collection[$i][27] : null;
                         $propiedades_computador->save();
                     }
                 }
-            } catch (\Illuminate\Database\QueryException $ex) {
+            } catch (Error $ex) {
 
-                dd('Error al insertar el activo de la fila ' . $i . " " . $ex->getMessage());
+                dd('Error al insertar el activo de la fila ' . ($i+1) . " " . $ex->getMessage());
             }
         
             echo ("<script LANGUAGE='JavaScript'>
-                  window.alert('Se cargaron los activos con éxito');
+                  window.alert('Se cargaron los " . $i .  " activos con éxito');
                   window.location.href='/';
                   </script>");            
             
@@ -402,7 +407,7 @@ class InventarioController extends Controller {
 
             $propiedades_computador = Propiedades_computador::find($request->get("id_activo"));
 
-            if ($request->get("nombre_computador") != null && $propiedades_computador->nombre_equipo != $request->get("nombre_computador")) {
+            if ($request->get("nombre_computador") != "null" && $request->get("nombre_computador") != null && $propiedades_computador->nombre_equipo != $request->get("nombre_computador")) {
 
                 $cambiosAregistrar .= "\n*Cambió el nombre_equipo\nAntes: " . $propiedades_computador->nombre_equipo . "\nDepués: " . $request->get("nombre_computador");
                 $propiedades_computador->nombre_equipo = $request->get("nombre_computador");
@@ -412,13 +417,13 @@ class InventarioController extends Controller {
                 $cambiosAregistrar .= "\n*Cambió el tipo de computador\nAntes: " . $propiedades_computador->tipo_escritorio_portatil . "\nDepués: " . $request->get("tipo_escritorio_portatil");
                 $propiedades_computador->tipo_escritorio_portatil = $request->get("tipo_escritorio_portatil");
             }
-            if ($request->get("mac") != null && $propiedades_computador->MACaddress != $request->get("mac")) {
+            if ($request->get("mac") != "null" && $request->get("mac") != null && $propiedades_computador->MACaddress != $request->get("mac")) {
 
                 $cambiosAregistrar .= "\n*Cambió la MAC\nAntes: " . $propiedades_computador->MACaddress . "\nDepués: " . $request->get("mac");
                 $propiedades_computador->MACaddress = $request->get("mac");
             }
 
-            if ($request->get("ip") != null && $propiedades_computador->IPaddress != $request->get("ip")) {
+            if ($request->get("ip") != "null" &&  $request->get("ip") != null && $propiedades_computador->IPaddress != $request->get("ip")) {
 
                 $cambiosAregistrar .= "\n*Cambió la IP\nAntes: " . $propiedades_computador->IPaddress . "\nDepués: " . $request->get("ip");
                 $propiedades_computador->IPaddress = $request->get("ip");
@@ -430,28 +435,32 @@ class InventarioController extends Controller {
                 $propiedades_computador->ip_puerta_enlace = $request->get("ip_gateway");
             }
 
-            if ($request->get("capacidad_ram") != null && $propiedades_computador->capacidad_ram != $request->get("capacidad_ram")) {
+            if ($request->get("capacidad_ram") != "null" && $request->get("capacidad_ram") != null && $propiedades_computador->capacidad_ram != $request->get("capacidad_ram")) {
                 $cambiosAregistrar .= "\n*Cambió la cantidad de RAM\nAntes: " . $propiedades_computador->capacidad_ram . "\nDepués: " . $request->get("capacidad_ram");
-                $propiedades_computador->capacidad_ram = $request->get("capacidad_ram");
+                $propiedades_computador->capacidad_ram = $request->get("capacidad_ram")?  $request->get("capacidad_ram") : 0;
             }
-            if ($request->get("capacidad_almacenamiento") != null && $propiedades_computador->capacidad_almacenamiento != $request->get("capacidad_almacenamiento")) {
+            if ($request->get("capacidad_almacenamiento") != "null" && $request->get("capacidad_almacenamiento") != null && $propiedades_computador->capacidad_almacenamiento != $request->get("capacidad_almacenamiento")) {
                 $cambiosAregistrar .= "\n*Cambió la capacidad de almacenamiento\nAntes: " . $propiedades_computador->capacidad_almacenamiento . "\nDepués: " . $request->get("capacidad_almacenamiento");
-                $propiedades_computador->capacidad_almacenamiento = $request->get("capacidad_almacenamiento");
+                $propiedades_computador->capacidad_almacenamiento = $request->get("capacidad_almacenamiento")? $request->get("capacidad_almacenamiento") : 0 ;
             }
-            if ($request->get("cantidad_tarjeta_red_inalambrica") != null && $propiedades_computador->cantidad_tarjeta_red_inalambrica != $request->get("cantidad_tarjeta_red_inalambrica")) {
+            if ($request->get("cantidad_tarjeta_red_inalambrica") != "null" && $request->get("cantidad_tarjeta_red_inalambrica") != null && $propiedades_computador->cantidad_tarjeta_red_inalambrica != $request->get("cantidad_tarjeta_red_inalambrica")) {
                 $cambiosAregistrar .= "\n*Cambió el número de NIC inalambricas\nAntes: " . $propiedades_computador->cantidad_tarjeta_red_inalambrica . "\nDepués: " . $request->get("cantidad_tarjeta_red_inalambrica");
-                $propiedades_computador->cantidad_tarjeta_red_inalambrica = $request->get("cantidad_tarjeta_red_inalambrica");
+                $propiedades_computador->cantidad_tarjeta_red_inalambrica = $request->get("cantidad_tarjeta_red_inalambrica")? $request->get("cantidad_tarjeta_red_inalambrica"): 0;
             }
 
-            if ($request->get("cantidad_tarjeta_red_alambrica") != null && $propiedades_computador->cantidad_tarjeta_red_alambrica != $request->get("cantidad_tarjeta_red_alambrica")) {
+            if ($request->get("cantidad_tarjeta_red_alambrica") != "null" &&  $request->get("cantidad_tarjeta_red_alambrica") != null && $propiedades_computador->cantidad_tarjeta_red_alambrica != $request->get("cantidad_tarjeta_red_alambrica")) {
                 $cambiosAregistrar .= "\n*Cambió el número de NIC alambricas\nAntes: " . $propiedades_computador->cantidad_tarjeta_red_alambrica . "\nDepués: " . $request->get("cantidad_tarjeta_red_alambrica");
-                $propiedades_computador->cantidad_tarjeta_red_alambrica = $request->get("cantidad_tarjeta_red_alambrica");
+                $propiedades_computador->cantidad_tarjeta_red_alambrica = $request->get("cantidad_tarjeta_red_alambrica")? $request->get("cantidad_tarjeta_red_alambrica") : 0;
             }
             $propiedades_computador->save();
 
 
         }
         
+        if($cambiosAregistrar == ""){
+            return "No realizaste ningún cambio";
+        }
+
         $movimiento = new Movimientos;
         $movimiento->id_activo = $request->get("id_activo");
         $movimiento->idUsuarioSolicito = $request->get("id_usuario_solicito");
@@ -584,6 +593,51 @@ class InventarioController extends Controller {
         
         return $activosRequierenMantenimiento;
         
+    }
+    
+    public function getComponentesDeActivo(Request $request){
+        $componentes = ComposicionActivos::where("id_activo_compuesto", $request->get("id_activo") )->get(["id_activo_componente"]);
+        
+        return Inventario::whereIn("id", $componentes)->get();
+    }
+
+    public function eliminarComponenteDeActivo($id_activo, $id_componente){
+        ComposicionActivos::where("id_activo_compuesto", $id_activo)
+        ->where("id_activo_componente", $id_componente)->delete();
+        
+
+        echo ("<script LANGUAGE='JavaScript'>
+        window.alert('Se eliminó el componente con éxito');
+        window.location.href='/#/inventario';
+        </script>");  
+    }
+
+    public function agregarComponente(Request $request){
+        $idActivosCompuestos = $request->get("idActivosComponentes");
+        $idActivoCompuesto  =  $request->get("id_activo");
+
+
+
+        $data = [];
+        foreach($idActivosCompuestos as $id){
+
+            if($id == $idActivoCompuesto){
+                echo ("<script LANGUAGE='JavaScript'>
+                window.alert('Un activo no puede ser componente de él mismo');
+                window.location.href='/#/inventario';
+                </script>");  
+                die();
+            }
+
+            array_push($data, ["id_activo_compuesto" => $idActivoCompuesto, "id_activo_componente" => $id]);
+        }
+
+        ComposicionActivos::insert($data);
+
+        echo ("<script LANGUAGE='JavaScript'>
+        window.alert('Se cargaron los " . sizeof($data) .  " componentes al activo');
+        window.location.href='/#/inventario';
+        </script>");  
     }
     
 }

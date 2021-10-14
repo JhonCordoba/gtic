@@ -9,7 +9,7 @@ class Propiedades_computadorController extends Controller
 {
     public function getPropiedadesDelComputador($id_activo) {
         
-        if( Propiedades_computador::find($id_activo) == null || Propiedades_computador::find($id_activo)->nombre_equipo == null ){
+        if( Propiedades_computador::find($id_activo) == null ){
             
             return null;
         

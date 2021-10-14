@@ -15,22 +15,22 @@ class CreateActivosTable extends Migration {
         Schema::create('activos', function (Blueprint $table) {
             
             $table->integer('id'); //se autoincrementa
-            $table->string('numero_inventario')->unique(); //se autoincrementa
-            $table->string('numero_serial')->default("");
+            $table->string('numero_inventario')->unique()->nullable(true); //se autoincrementa
+            $table->string('numero_serial')->unique()->nullable(true);
             $table->string('nombre');
-            $table->string('marca_referencia')->default("");
+            $table->string('marca_referencia')->default("")->nullable(true);
             $table->longText('observaciones')->nullable(true);
             $table->date('fecha_aceptacion')->nullable(true);
-            $table->integer('id_estado');
-            $table->integer('id_oficina_ubicacion');
-            $table->double('costo_inicial')->default(0);
+            $table->integer('id_estado')->nullable(true);
+            $table->integer('id_oficina_ubicacion')->nullable(true);
+            $table->double('costo_inicial')->default(0)->nullable(true);
             $table->date('ultima_revision_estado')->nullable(true);
-            $table->integer('id_funcionario_responsable');
-            $table->integer('id_usuario');
-            $table->boolean('funciona_correctamente');
-            $table->string('datos_contacto_proveedor')->default("");
+            $table->integer('id_funcionario_responsable')->nullable(true);
+            $table->integer('id_usuario')->nullable(true);
+            $table->boolean('funciona_correctamente')->default(true);
+            $table->string('datos_contacto_proveedor')->default("")->nullable(true);
             $table->date('fecha_fin_garantia')->nullable(true);
-            $table->string('numero_factura')->default("");
+            $table->string('numero_factura')->default("")->nullable(true);
             $table->boolean('es_computador');
             
             $table->timestamps();

@@ -16,15 +16,15 @@ class CreatePropiedadesComputadorTable extends Migration
         Schema::create('propiedades_computador', function (Blueprint $table) {
             
             $table->integer('id_activo');
-            $table->string('nombre_equipo')->unique();
+            $table->string('nombre_equipo')->nullable()->unique();
             $table->string('tipo_escritorio_portatil');
             $table->string('MACaddress')->nullable()->unique();
             $table->string('IPaddress')->nullable()->unique();
-            $table->string('ip_puerta_enlace')->nullable();
-            $table->double('capacidad_ram');
-            $table->double('capacidad_almacenamiento');
-            $table->integer('cantidad_tarjeta_red_inalambrica');
-            $table->integer('cantidad_tarjeta_red_alambrica');
+            $table->string('ip_puerta_enlace')->nullable()->default("");
+            $table->double('capacidad_ram')->nullable()->default(0);
+            $table->double('capacidad_almacenamiento')->nullable()->default(0);
+            $table->integer('cantidad_tarjeta_red_inalambrica')->nullable()->default(0);
+            $table->integer('cantidad_tarjeta_red_alambrica')->nullable()->default(1);
             
             $table->timestamps();
             
