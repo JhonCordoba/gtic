@@ -74,7 +74,7 @@ Route::post('/subir_activos', "InventarioController@registrarActivos");
 
 Route::post('/activos', "InventarioController@registrarActivo")->middleware("jwt.auth", "role:root");
 
-Route::get('/activo/componentes',  'InventarioController@getComponentesDeActivo')->middleware('jwt.auth');
+Route::get('/activo/componentes-compuestode',  'InventarioController@getComponentes_CompuestoDe_DeActivo')->middleware('jwt.auth');
 Route::post('/activos/agregar-componente',  'InventarioController@agregarComponente');
 
 

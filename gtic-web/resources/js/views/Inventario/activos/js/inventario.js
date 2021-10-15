@@ -404,6 +404,79 @@ export default {
             });
 
             $("#modalSGTbody").append("</table>");
+
+            var idActivoCompuesto = $(e.relatedTarget).data("id_activo");
+            $.ajax({
+                url: "/activo/componentes-compuestode",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token_auth_api"
+                    )}`
+                },
+                data: { id_activo: idActivoCompuesto },
+                method: "GET",
+                success: function(result, status, xhr) {
+                    console.log(result);
+                    let listaDeComponentes =
+                        " <h3> Componentes del activo: </h3>" +
+                        "<table>" +
+                        "<tr> <th> Nombre </th> <th> # Inventario </th> <th> # Serial </th>    </tr>";
+
+                    result[0].forEach(function(element) {
+                        let fila =
+                            "<tr style='box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.75);'>";
+
+                        fila += "<td>" + element.nombre + "</td>";
+                        fila += "<td>" + element.numero_inventario + "</td>";
+                        fila += "<td>" + element.numero_serial + "</td>";
+
+                        fila += "</tr>";
+
+                        listaDeComponentes += fila;
+                    });
+
+                    listaDeComponentes += "</table> ";
+
+                    if (result[0].length == 0) {
+                        listaDeComponentes = "";
+                    }
+                    $("#modalSGTbody").append(listaDeComponentes);
+
+                    ////
+                    if (result[1] == null) return;
+                    let compuestoDe =
+                        " <h3>El activo es un compuesto de: </h3>" +
+                        "<table>" +
+                        "<tr> <th> Nombre </th> <th> # Inventario </th> <th> # Serial </th>    </tr>" +
+                        "<tr style='box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.75);'>" +
+                        "<td>" +
+                        result[1].nombre +
+                        "</td>" +
+                        "<td>" +
+                        result[1].numero_inventario +
+                        "</td>" +
+                        "<td>" +
+                        result[1].numero_serial +
+                        "</td> </tr> </table> ";
+
+                    if (result[1].length == 0) {
+                        compuestoDe = "";
+                    }
+                    $("#modalSGTbody").append(compuestoDe);
+                    ////
+                },
+
+                error: function(xhr) {
+                    console.log(
+                        "Request Status: " +
+                            xhr.status +
+                            " Status Text: " +
+                            xhr.statusText +
+                            " " +
+                            xhr.responseText
+                    );
+                }
+            });
         },
 
         listarAnexosDelActivo(id_activo) {

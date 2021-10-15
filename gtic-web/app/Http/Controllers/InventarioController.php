@@ -15,6 +15,7 @@ use Importer;
 use Response;
 use Auth;
 use Error;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class InventarioController extends Controller {
@@ -210,84 +211,108 @@ class InventarioController extends Controller {
 
     public function registrarActivos() {
 
-        //Verifica que se haya seleccionado un archivo
-        if ($_FILES['activos']['tmp_name'] == NULL) {
-            echo ("<script LANGUAGE='JavaScript'>
-                window.alert('NO SE SELECCIONÓ EL ARCHIVO');
-                window.location.href='/';
-                </script>");
-        }
-
-        $tmp_name = $_FILES['activos']['tmp_name'];
-
-        if (move_uploaded_file($tmp_name, $tmp_name)) {
-
-            $excel = Importer::make('Excel');
-            $excel->load($tmp_name);
-            $collection = $excel->getCollection();
-
-            $cantidadActivos = Inventario::all()->count();
+        DB::transaction(function() { 
 
 
-
-            $i = 0;
-            try {
-
-                for ($i = 1; $i < sizeof($collection); $i++) {
-
-                    if(!$collection[$i][0] && !$collection[$i][1])
-                      throw new Error("debes indicar al menos una de las siguientes propiedades: Número de inventario o Serial");
-
-                    $activo = new Inventario();
-                    $activo->id = ++$cantidadActivos;
-                    $activo->numero_inventario = $collection[$i][0]? $collection[$i][0] : null;
-                    $activo->numero_serial = $collection[$i][1];
-                    $activo->nombre = $collection[$i][2];
-                    $activo->marca_referencia = $collection[$i][3];
-                    $activo->observaciones = $collection[$i][4];
-                    $activo->fecha_aceptacion = $collection[1][5]? $collection[1][5] : null;
-                    $activo->id_estado = $collection[$i][6]? $collection[$i][6] : null;
-                    $activo->id_oficina_ubicacion = $collection[$i][7]? $collection[$i][7] : null;
-                    $activo->costo_inicial = $collection[$i][8]? $collection[$i][8] : null;
-                    $activo->ultima_revision_estado =  $collection[$i][9]? $collection[$i][9] : null;
-                    $activo->id_funcionario_responsable = $collection[$i][10]? $collection[$i][10] : null;
-                    $activo->id_usuario = $collection[$i][11]? $collection[$i][11] : null;
-                    $activo->funciona_correctamente =  $collection[$i][12]? $collection[$i][12] : 1;
-                    $activo->datos_contacto_proveedor = $collection[$i][13];
-                    $activo->fecha_fin_garantia = $collection[$i][14]? $collection[$i][14] : null;
-                    $activo->numero_factura = $collection[$i][15];
-                    $activo->ultimo_mantenimiento = $collection[$i][16]? $collection[$i][16] : null;
-                    $activo->cada_cuantos_dias_mantenimiento  = $collection[$i][17]? $collection[$i][17] : null;
-                    $activo->es_computador = $collection[$i][18];
-                    $activo->save();
-                    
-                    //Si es un computador, guardamos las propiedades del computador
-                    if ($collection[$i][18] == 1) {
-                        $propiedades_computador = new Propiedades_computador();
-                        $propiedades_computador->id_activo = $cantidadActivos;
-                        $propiedades_computador->nombre_equipo = $collection[$i][19]? $collection[$i][19] : null;
-                        $propiedades_computador->tipo_escritorio_portatil = $collection[$i][20];
-                        $propiedades_computador->MACaddress = $collection[$i][21]? $collection[$i][21] : null;
-                        $propiedades_computador->IPaddress = $collection[$i][22]? $collection[$i][22]: null;
-                        $propiedades_computador->ip_puerta_enlace = $collection[$i][23];
-                        $propiedades_computador->capacidad_ram = $collection[$i][24] ? $collection[$i][24] : null;
-                        $propiedades_computador->capacidad_almacenamiento = $collection[$i][25]? $collection[$i][25] : null;
-                        $propiedades_computador->cantidad_tarjeta_red_inalambrica = $collection[$i][26]? $collection[$i][26] : null;
-                        $propiedades_computador->cantidad_tarjeta_red_alambrica = $collection[$i][27]? $collection[$i][27] : null;
-                        $propiedades_computador->save();
-                    }
-                }
-            } catch (Error $ex) {
-
-                dd('Error al insertar el activo de la fila ' . ($i+1) . " " . $ex->getMessage());
+            //Verifica que se haya seleccionado un archivo
+            if ($_FILES['activos']['tmp_name'] == NULL) {
+                echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('NO SE SELECCIONÓ EL ARCHIVO');
+                    window.location.href='/';
+                    </script>");
             }
-        
-            echo ("<script LANGUAGE='JavaScript'>
-                  window.alert('Se cargaron los " . $i .  " activos con éxito');
-                  window.location.href='/';
-                  </script>");            
+
+            $tmp_name = $_FILES['activos']['tmp_name'];
+
+            if (move_uploaded_file($tmp_name, $tmp_name)) {
+                
+    
+                $excel = Importer::make('Excel');
+                $excel->load($tmp_name);
+                $collection = $excel->getCollection();
+
+                $cantidadActivos = Inventario::all()->count();
+
+                $i = 0;
+                try {
+
+                    for ($i = 1; $i < sizeof($collection); $i++) {
+
+                        if(!$collection[$i][0] && !$collection[$i][1])
+                         break;
+                         //throw new Error("debes indicar al menos una de las siguientes propiedades: Número de inventario o Serial");
+
+                        $activo = new Inventario();
+                        $activo->id = ++$cantidadActivos;
+                        $activo->numero_inventario = $collection[$i][0]? $collection[$i][0] : null;
+                        $activo->numero_serial = $collection[$i][1];
+                        $activo->nombre = $collection[$i][2];
+                        $activo->marca_referencia = $collection[$i][3];
+                        $activo->observaciones = $collection[$i][4];
+                        $activo->fecha_aceptacion = $collection[1][5]? $collection[1][5] : null;
+                        $activo->id_estado = $collection[$i][6]? $collection[$i][6] : null;
+                        $activo->id_oficina_ubicacion = $collection[$i][7]? $collection[$i][7] : null;
+                        $activo->costo_inicial = $collection[$i][8]? $collection[$i][8] : null;
+                        $activo->ultima_revision_estado =  $collection[$i][9]? $collection[$i][9] : null;
+                        $activo->id_funcionario_responsable = $collection[$i][10]? $collection[$i][10] : null;
+                        $activo->id_usuario = $collection[$i][11]? $collection[$i][11] : null;
+                        $activo->funciona_correctamente =  $collection[$i][12]? $collection[$i][12] : 1;
+                        $activo->datos_contacto_proveedor = $collection[$i][13];
+                        $activo->fecha_fin_garantia = $collection[$i][14]? $collection[$i][14] : null;
+                        $activo->numero_factura = $collection[$i][15];
+                        $activo->ultimo_mantenimiento = $collection[$i][16]? $collection[$i][16] : null;
+                        $activo->cada_cuantos_dias_mantenimiento  = $collection[$i][17]? $collection[$i][17] : null;
+                        $activo->es_computador = $collection[$i][18];
+                        $activo->save();
+                        
+                        //Si es un computador, guardamos las propiedades del computador
+                        if ($collection[$i][18] == 1) {
+                            $propiedades_computador = new Propiedades_computador();
+                            $propiedades_computador->id_activo = $cantidadActivos;
+                            $propiedades_computador->nombre_equipo = $collection[$i][19]? $collection[$i][19] : null;
+                            $propiedades_computador->tipo_escritorio_portatil = $collection[$i][20];
+                            $propiedades_computador->MACaddress = $collection[$i][21]? $collection[$i][21] : null;
+                            $propiedades_computador->IPaddress = $collection[$i][22]? $collection[$i][22]: null;
+                            $propiedades_computador->ip_puerta_enlace = $collection[$i][23];
+                            $propiedades_computador->capacidad_ram = $collection[$i][24] ? $collection[$i][24] : null;
+                            $propiedades_computador->capacidad_almacenamiento = $collection[$i][25]? $collection[$i][25] : null;
+                            $propiedades_computador->cantidad_tarjeta_red_inalambrica = $collection[$i][26]? $collection[$i][26] : null;
+                            $propiedades_computador->cantidad_tarjeta_red_alambrica = $collection[$i][27]? $collection[$i][27] : null;
+                            $propiedades_computador->save();
+                        }
+
+                        if($collection[$i][28] == "" || $collection[$i][28] == null)
+                            throw new Error("debes indicar si es un activo compuesto o el id del activo al que compone, en la fila: " . ($i+1));
+
+                        if($collection[$i][28] != "COMPUESTO"){
+                            $activo_compuesto = Inventario::where("numero_inventario", $collection[$i][28])
+                                    ->orWhere("numero_serial", $collection[$i][28])->first();
+
+                            if($activo_compuesto == null)
+                            throw new Error("No se encuentra el compuesto con número de inventario ó serial: " . $collection[$i][28] . " para el componente de la fila " . ($i+1) );
+
+                            $composicionActivo = new ComposicionActivos();
+                            $composicionActivo->id_activo_compuesto = $activo_compuesto->id;
+                            $composicionActivo->id_activo_componente = $cantidadActivos;
+                            $composicionActivo->save();
+                        }
+                    }
+
+                } catch (Error $ex) {
+
+                    dd('Error al insertar el activo de la fila ' . ($i+1) . " " . $ex->getMessage());
+                }
             
-        }
+                echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('Se cargaron los " . ($i-1) .  " activos con éxito');
+                    window.location.href='/';
+                    </script>");            
+                
+
+            }
+
+        });
+
     }
 
     public function actualizarActivo(Request $request) {
@@ -595,16 +620,45 @@ class InventarioController extends Controller {
         
     }
     
-    public function getComponentesDeActivo(Request $request){
+    public function getComponentes_CompuestoDe_DeActivo(Request $request){
         $componentes = ComposicionActivos::where("id_activo_compuesto", $request->get("id_activo") )->get(["id_activo_componente"]);
-        
-        return Inventario::whereIn("id", $componentes)->get();
+
+        $compuestoDe = ComposicionActivos::where("id_activo_componente", $request->get("id_activo") )->first(["id_activo_compuesto"]);
+
+
+        $result = [];
+
+        array_push($result, Inventario::whereIn("id", $componentes)->get());
+
+        if($compuestoDe != null)
+            array_push($result, Inventario::where("id", $compuestoDe->id_activo_compuesto)->first() );
+        else
+            array_push($result, null );
+
+        return $result;
+          
     }
 
     public function eliminarComponenteDeActivo($id_activo, $id_componente){
         ComposicionActivos::where("id_activo_compuesto", $id_activo)
         ->where("id_activo_componente", $id_componente)->delete();
         
+
+        $movimiento = new Movimientos;
+        $movimiento->id_activo = $id_activo;
+        //TODO: no se puede usar Auth::id() porque no se le está aplicando el middleware jwt.auth:
+        $movimiento->idUsuarioSolicito = 0;
+        $movimiento->observaciones = "Se le quitó el componente con id: " . $id_componente;
+        $movimiento->yaDevuelto = null;
+        $movimiento->save();
+
+        $movimiento = new Movimientos;
+        $movimiento->id_activo = $id_componente;
+        //TODO: no se puede usar Auth::id() porque no se le está aplicando el middleware jwt.auth:
+        $movimiento->idUsuarioSolicito = 0;
+        $movimiento->observaciones = "Ya no es más un componente del activo con id: " . $id_activo;
+        $movimiento->yaDevuelto = null;
+        $movimiento->save();
 
         echo ("<script LANGUAGE='JavaScript'>
         window.alert('Se eliminó el componente con éxito');
@@ -617,8 +671,8 @@ class InventarioController extends Controller {
         $idActivoCompuesto  =  $request->get("id_activo");
 
 
-
         $data = [];
+        $infoComponentesAgregados = "";
         foreach($idActivosCompuestos as $id){
 
             if($id == $idActivoCompuesto){
@@ -629,10 +683,28 @@ class InventarioController extends Controller {
                 die();
             }
 
+            $infoComponentesAgregados .= $id . ", ";
+
             array_push($data, ["id_activo_compuesto" => $idActivoCompuesto, "id_activo_componente" => $id]);
+
+            $movimiento = new Movimientos;
+            $movimiento->id_activo = $id;
+            //TODO: no se puede usar Auth::id() porque no se le está aplicando el middleware jwt.auth:
+            $movimiento->idUsuarioSolicito = 0;
+            $movimiento->observaciones = "Ahora es un componente del activo con id: " . $idActivoCompuesto;
+            $movimiento->yaDevuelto = null;
+            $movimiento->save();
         }
 
         ComposicionActivos::insert($data);
+
+        $movimiento = new Movimientos;
+        $movimiento->id_activo = $request->get("id_activo");
+        //TODO: no se puede usar Auth::id() porque no se le está aplicando el middleware jwt.auth:
+        $movimiento->idUsuarioSolicito = 0;
+        $movimiento->observaciones = "Se le agregaron los componentes  con id: " . $infoComponentesAgregados ;
+        $movimiento->yaDevuelto = null;
+        $movimiento->save();
 
         echo ("<script LANGUAGE='JavaScript'>
         window.alert('Se cargaron los " . sizeof($data) .  " componentes al activo');
