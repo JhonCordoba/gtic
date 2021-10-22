@@ -23,8 +23,9 @@ export default {
                     console.log(result);
 
                     result.forEach(function(element, idx) {
-                        if (element[0].observaciones == null)
-                            var observacion = "";
+                        var observacion = "";
+                        if (element[0].observaciones)
+                            observacion = element[0].observaciones;
                         //si estamos en el último elmento, no hacemos la iteración porque estamos en los links de pagination
                         if (idx !== result.length - 1) {
                             let elemento_columna =
@@ -559,7 +560,9 @@ export default {
             $("#cuerpo_tabla_inventario").empty();
 
             inventario_filtrado.forEach(function(element) {
-                if (element[0].observaciones == null) var observacion = "";
+                var observacion = "";
+                if (element[0].observaciones)
+                    observacion = element[0].observaciones;
                 let elemento_columna =
                     "<tr>" +
                     "<td>" +
