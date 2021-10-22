@@ -245,7 +245,7 @@ class InventarioController extends Controller {
                         $activo = new Inventario();
                         $activo->id = ++$cantidadActivos;
                         $activo->numero_inventario = $collection[$i][0]? $collection[$i][0] : null;
-                        $activo->numero_serial = $collection[$i][1];
+                        $activo->numero_serial = $collection[$i][1]? $collection[$i][1] : null;
                         $activo->nombre = $collection[$i][2];
                         $activo->marca_referencia = $collection[$i][3];
                         $activo->observaciones = $collection[$i][4];
