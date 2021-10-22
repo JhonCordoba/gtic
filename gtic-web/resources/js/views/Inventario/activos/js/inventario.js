@@ -132,7 +132,7 @@ export default {
                                 '"data-oficina="' +
                                 element[0].nombre_oficina_ubicacion +
                                 '"data-observaciones="' +
-                                element[0].observacion.replace(/['"]+/g, "") +
+                                observacion.replace(/['"]+/g, "") +
                                 '"data-ultima_revision="' +
                                 element[0].ultima_revision_estado +
                                 '"data-serial="' +
