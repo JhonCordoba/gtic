@@ -158,7 +158,7 @@ class InventarioController extends Controller {
     
     public function registrarActivo(Request $request) {
 
-        $cantidadActivos = Inventario::latest()->first()->id;
+        $cantidadActivos = Inventario::all()->last()->id;
         try {
 
             $activo = new Inventario();
@@ -231,7 +231,7 @@ class InventarioController extends Controller {
                 $excel->load($tmp_name);
                 $collection = $excel->getCollection();
 
-                $cantidadActivos = Inventario::latest()->first()->id;
+                $cantidadActivos = Inventario::all()->last()->id;
 
                 $i = 0;
                 try {
