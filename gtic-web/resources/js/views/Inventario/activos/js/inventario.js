@@ -129,27 +129,33 @@ export default {
                                 '"data-oficina="' +
                                 element[0].nombre_oficina_ubicacion +
                                 '"data-observaciones="' +
-                                element[0].observaciones.replace(/['"]+/g, "") +
-                                '"data-ultima_revision="' +
-                                element[0].ultima_revision_estado +
-                                '"data-serial="' +
-                                element[0].numero_serial +
-                                '"data-costo_inicial="' +
-                                element[0].costo_inicial +
-                                '"data-datos_proveedor="' +
-                                element[0].datos_contacto_proveedor +
-                                '"data-fecha_fin_garantia="' +
-                                element[0].fecha_fin_garantia +
-                                '"data-numero_factura="' +
-                                element[0].numero_factura +
-                                '"data-fecha_ingreso_al_sistema="' +
-                                element[0].created_at +
-                                '"data-ultimo_mantenimiento="' +
-                                element[0].ultimo_mantenimiento +
-                                '"data-cada_cuantos_dias_mantenimiento="' +
-                                element[0].cada_cuantos_dias_mantenimiento +
-                                '"data-es_computador="' +
-                                element[0].es_computador;
+                                element[0].observaciones
+                                    ? element[0].observaciones.replace(
+                                          /['"]+/g,
+                                          ""
+                                      )
+                                    : "" +
+                                      '"data-ultima_revision="' +
+                                      element[0].ultima_revision_estado +
+                                      '"data-serial="' +
+                                      element[0].numero_serial +
+                                      '"data-costo_inicial="' +
+                                      element[0].costo_inicial +
+                                      '"data-datos_proveedor="' +
+                                      element[0].datos_contacto_proveedor +
+                                      '"data-fecha_fin_garantia="' +
+                                      element[0].fecha_fin_garantia +
+                                      '"data-numero_factura="' +
+                                      element[0].numero_factura +
+                                      '"data-fecha_ingreso_al_sistema="' +
+                                      element[0].created_at +
+                                      '"data-ultimo_mantenimiento="' +
+                                      element[0].ultimo_mantenimiento +
+                                      '"data-cada_cuantos_dias_mantenimiento="' +
+                                      element[0]
+                                          .cada_cuantos_dias_mantenimiento +
+                                      '"data-es_computador="' +
+                                      element[0].es_computador;
 
                             if (
                                 element[0].es_computador === 1 &&
@@ -582,40 +588,42 @@ export default {
                     element[0].nombre_usuario +
                     "</td>" +
                     "<td>" +
-                    element[0].observaciones.replace(/['"]+/g, "") +
-                    "</td>" +
-                    "<td>" +
-                    element[0].nombre_estado_de_activo +
-                    "</td>" +
-                    "<td>" +
-                    element[0].ultima_revision_estado +
-                    "</td>" +
-                    '<td><i class="material-icons" title="Más información" data-toggle="modal" data-target="#modalSGT" data-id_metodo="mas_informacion_activo" data-serial="' +
-                    element[0].numero_serial +
-                    '" data-nombre="' +
-                    element[0].nombre +
-                    '"data-fecha_aceptacion="' +
-                    element[0].fecha_aceptacion +
-                    '"data-fecha_aceptacion="' +
-                    element[0].fecha_aceptacion +
-                    '"data-costo_inicial="' +
-                    element[0].costo_inicial +
-                    '"data-datos_proveedor="' +
-                    element[0].datos_contacto_proveedor +
-                    '"data-fecha_fin_garantia="' +
-                    element[0].fecha_fin_garantia +
-                    '"data-numero_factura="' +
-                    element[0].numero_factura +
-                    '"data-fecha_ingreso_al_sistema="' +
-                    element[0].created_at +
-                    '"data-id_activo="' +
-                    element[0].id +
-                    '"data-ultimo_mantenimiento="' +
-                    element[0].ultimo_mantenimiento +
-                    '"data-cada_cuantos_dias_mantenimiento="' +
-                    element[0].cada_cuantos_dias_mantenimiento +
-                    '"data-es_computador="' +
-                    element[0].es_computador;
+                    element[0].observaciones
+                        ? element[0].observaciones.replace(/['"]+/g, "")
+                        : "" +
+                          "</td>" +
+                          "<td>" +
+                          element[0].nombre_estado_de_activo +
+                          "</td>" +
+                          "<td>" +
+                          element[0].ultima_revision_estado +
+                          "</td>" +
+                          '<td><i class="material-icons" title="Más información" data-toggle="modal" data-target="#modalSGT" data-id_metodo="mas_informacion_activo" data-serial="' +
+                          element[0].numero_serial +
+                          '" data-nombre="' +
+                          element[0].nombre +
+                          '"data-fecha_aceptacion="' +
+                          element[0].fecha_aceptacion +
+                          '"data-fecha_aceptacion="' +
+                          element[0].fecha_aceptacion +
+                          '"data-costo_inicial="' +
+                          element[0].costo_inicial +
+                          '"data-datos_proveedor="' +
+                          element[0].datos_contacto_proveedor +
+                          '"data-fecha_fin_garantia="' +
+                          element[0].fecha_fin_garantia +
+                          '"data-numero_factura="' +
+                          element[0].numero_factura +
+                          '"data-fecha_ingreso_al_sistema="' +
+                          element[0].created_at +
+                          '"data-id_activo="' +
+                          element[0].id +
+                          '"data-ultimo_mantenimiento="' +
+                          element[0].ultimo_mantenimiento +
+                          '"data-cada_cuantos_dias_mantenimiento="' +
+                          element[0].cada_cuantos_dias_mantenimiento +
+                          '"data-es_computador="' +
+                          element[0].es_computador;
 
                 if (null != element[1] && element[0].es_computador === 1) {
                     elemento_columna +=

@@ -1,5 +1,4 @@
-
-window._ = require('lodash');
+window._ = require("lodash");
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -8,17 +7,17 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
-    require('bootstrap');
+    window.Popper = require("popper.js").default;
+    window.$ = window.jQuery = require("jquery");
+    require("bootstrap");
 } catch (e) {}
 
 /**
- * Here i create a global variable called: API_URL. 
+ * Here i create a global variable called: API_URL.
  * This  Variable i will use to specify the URL of the API  So,
- * i can set easily the server URL in all parts of the project 
+ * i can set easily the server URL in all parts of the project
  */
-Window.API_URL = "http://127.0.0.1:8000/api";
+Window.API_URL = "http://192.168.103.5:8084/api";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -26,9 +25,9 @@ Window.API_URL = "http://127.0.0.1:8000/api";
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = require("axios");
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -39,21 +38,28 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error(
+        "CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token"
+    );
 }
 
 //Se deben realizar todas las peticiones con Axios, si el usuario no está auténticado
 //Se redireccionará a la página de Login
-window.axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token_auth_api")}`;
-window.axios.interceptors.response.use(function(response){
-    return response;
-}, function(error){
-    alert("Debes ingresar tu usuario y contraseña");
-    window.location.href = '/login';
-    //return Promise.reject(error);
-});
+window.axios.defaults.headers.common[
+    "Authorization"
+] = `Bearer ${localStorage.getItem("token_auth_api")}`;
+window.axios.interceptors.response.use(
+    function(response) {
+        return response;
+    },
+    function(error) {
+        alert("Debes ingresar tu usuario y contraseña");
+        window.location.href = "/login";
+        //return Promise.reject(error);
+    }
+);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
