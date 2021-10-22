@@ -158,7 +158,7 @@ class InventarioController extends Controller {
     
     public function registrarActivo(Request $request) {
 
-        $cantidadActivos = Inventario::all()->count();
+        $cantidadActivos = Inventario::all()->last()->id;
         try {
 
             $activo = new Inventario();
