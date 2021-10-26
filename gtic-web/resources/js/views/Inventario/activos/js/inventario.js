@@ -1158,7 +1158,7 @@ export default {
                 var idActivoCompuesto = event.target.value;
 
                 $.ajax({
-                    url: "/activo/componentes",
+                    url: "/activo/componentes-compuestode",
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "token_auth_api"
@@ -1171,8 +1171,8 @@ export default {
                             "<h3> Componentes del activo: </h3>" +
                             "<table>" +
                             "<tr> <th> Nombre </th> <th> # Inventario </th> <th> # Serial </th>  <th> quitar </th>  </tr>";
-
-                        result.forEach(function(element) {
+                        console.log(result);
+                        result[0].forEach(function(element) {
                             let fila =
                                 "<tr style='box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.75);'>";
 
