@@ -930,11 +930,11 @@ export default {
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Responsable del activo</label>" +
-                "<select id='selectResponsableEditarActivo' class='inputModificar' name='id_responsable'> <option value=null>Responsable</option>  </select>" +
+                "<select id='selectResponsableEditarActivo' data-live-search='true' class='selectpicker'  name='id_responsable'> <option value=null>Responsable</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Usuario</label>" +
-                "<select id='selectUsuarioEditarActivo'  class='inputModificar' name='id_usuario'> <option value=null>Usuario</option>  </select>" +
+                "<select id='selectUsuarioEditarActivo'  data-live-search='true' class='selectpicker' name='id_usuario'> <option value=null>Usuario</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Funciona Correctamente</label>" +
@@ -1306,11 +1306,11 @@ export default {
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Responsable del activo</label>" +
-                "<select id='selectResponsableEditarActivo' class='inputModificar' name='id_funcionario_responsable'> <option value=null>Responsable</option>  </select>" +
+                "<select id='selectResponsableEditarActivo' data-live-search='true' class='selectpicker' name='id_funcionario_responsable'> <option value=null>Responsable</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Usuario</label>" +
-                "<select id='selectUsuarioEditarActivo'  class='inputModificar' name='id_usuario'> <option value=null>Usuario</option>  </select>" +
+                "<select id='selectUsuarioEditarActivo'  data-live-search='true' class='selectpicker' name='id_usuario'> <option value=null>Usuario</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Funciona Correctamente</label>" +

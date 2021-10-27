@@ -17,8 +17,8 @@ try {
  * This  Variable i will use to specify the URL of the API  So,
  * i can set easily the server URL in all parts of the project
  */
-Window.API_URL = "http://192.168.103.5:8084/api";
-//Window.API_URL = "http://127.0.0.1:8000/api";
+//Window.API_URL = "http://192.168.103.5:8084/api";
+Window.API_URL = "http://127.0.0.1:8000/api";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
