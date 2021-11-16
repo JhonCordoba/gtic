@@ -201,7 +201,7 @@ class InventarioController extends Controller {
             }
         } catch (\Illuminate\Database\QueryException $ex) {
 
-            return [ "mensaje" => 'Error al insertar el activo:\\n"' . $ex->getMessage(), "codigo" => -1 ];
+            return response([ "mensaje" => 'Error al insertar el activo:\\n"' . $ex->getMessage(), "codigo" => -1 ], 500);
             
         }
         

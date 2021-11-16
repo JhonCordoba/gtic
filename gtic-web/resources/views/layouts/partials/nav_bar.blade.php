@@ -43,14 +43,14 @@
             <li class="nav-item borde-elemento-navbar" onclick="window.location.href='/#/recursoshumanos'">
                 <div style="font-size: 1.1em;">
                     <i class="material-icons float-right" style="color: white; margin-top: 0.4em;"> supervisor_account </i>
-                    <a onclick="event.preventDefault();" style="margin-top: 0.4em;" class="nav-link">Recurso Humano</a>
+                    <a onclick="event.preventDefault();" style="margin-top: 0.4em;" class="nav-link">Personal</a>
                 </div>
             </li>
 
             <li class="nav-item borde-elemento-navbar" onclick="window.location.href='/#/inventario'">
                 <div style="font-size: 1.1em;">
                     <i class="material-icons float-right" style="color: white; margin-top: 0.4em;"> adb </i>
-                    <a onclick="event.preventDefault();" style="margin-top: 0.4em;" class="nav-link">Recurso Tecnológico</a>
+                    <a onclick="event.preventDefault();" style="margin-top: 0.4em;" class="nav-link">Inventario</a>
                 </div>
             </li>
 

@@ -1306,11 +1306,11 @@ export default {
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Responsable del activo</label>" +
-                "<select id='selectResponsableEditarActivo' data-live-search='true' class='selectpicker' name='id_funcionario_responsable'> <option value=null>Responsable</option>  </select>" +
+                "<select id='selectResponsableEditarActivo' data-live-search='true' class='selectpicker' name='id_funcionario_responsable'> <option value=''>Responsable</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Usuario</label>" +
-                "<select id='selectUsuarioEditarActivo'  data-live-search='true' class='selectpicker' name='id_usuario'> <option value=null>Usuario</option>  </select>" +
+                "<select id='selectUsuarioEditarActivo'  data-live-search='true' class='selectpicker' name='id_usuario'> <option value=''>Usuario</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Funciona Correctamente</label>" +
@@ -1473,11 +1473,11 @@ export default {
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus);
-                    console.log(jqXHR);
+                    console.log(jqXHR.responseJSON.mensaje);
                     console.log(errorThrown);
                     alert(
                         "Se produjo un error, por favor intenta nuevamente:\n" +
-                            errorThrown
+                            jqXHR.responseJSON.mensaje
                     );
                 }
             });
