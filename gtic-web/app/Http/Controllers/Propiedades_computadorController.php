@@ -20,4 +20,13 @@ class Propiedades_computadorController extends Controller
         } 
         
     }
+
+    public function getActivosPorFiltroIP($ipFilter){
+       $ids = Propiedades_computador::select("id_activo")->where("IPaddress", "LIKE", "%{$ipFilter}%")->get();
+        $response = [];
+       foreach ($ids as $id) {
+            array_push($response, $id->id_activo);
+        }
+        return $response;
+    }
 }

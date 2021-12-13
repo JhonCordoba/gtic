@@ -739,19 +739,19 @@ export default {
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Oficina Ubicación</label>" +
-                "<select id='selectOficinaEditarActivo'  class='inputModificar' name='oficina'> <option value=null>Oficina Ubicación</option>  </select>" +
+                "<select id='selectOficinaEditarActivo'  class='inputModificar' name='oficina'> <option value=''>Oficina Ubicación</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Responsable del activo</label>" +
-                "<select id='selectResponsableEditarActivo' class='inputModificar' name='id_responsable'> <option value=null>Responsable</option>  </select>" +
+                "<select id='selectResponsableEditarActivo' class='inputModificar' name='id_responsable'> <option value=''>Responsable</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Usuario</label>" +
-                "<select id='selectUsuarioEditarActivo'  class='inputModificar' name='id_usuario'> <option value=null>Usuario</option>  </select>" +
+                "<select id='selectUsuarioEditarActivo'  class='inputModificar' name='id_usuario'> <option value=''>Usuario</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Funciona Correctamente</label>" +
-                "<select  class='inputModificar' name='funciona_correctamente'> <option selected value=null>---</option> <option value=1>Sí</option> <option value=0>No</option>  </select>" +
+                "<select  class='inputModificar' name='funciona_correctamente'> <option selected value=''>---</option> <option value=1>Sí</option> <option value=0>No</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario ajustadoAtextArea'>" +
                 "<label>Observación</label>" +
@@ -759,7 +759,7 @@ export default {
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Estado</label>" +
-                "<select id='selectEstadosEditarActivo' class='inputModificar' name='estado'> <option value=null>Estado</option>  </select>" +
+                "<select id='selectEstadosEditarActivo' class='inputModificar' name='estado'> <option value=''>Estado</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Última Revisión</label>" +
@@ -787,7 +787,7 @@ export default {
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Es un computador</label>" +
-                "<select class='inputModificar' name='es_computador'> <option selected value=null>---</option> <option value=1>Sí</option><option value=0>No</option>  </select>" +
+                "<select class='inputModificar' name='es_computador'> <option selected value=''>---</option> <option value=1>Sí</option><option value=0>No</option>  </select>" +
                 "</div>" +
                 "<div class='contenedorInputFormulario'>" +
                 "<label>Nombre Computador</label>" +
@@ -854,7 +854,7 @@ export default {
 
             //Enlazamos los eventos DESPUÉS DE CREAR EL FORMULARIO
             let this_context_component = this;
-            $("#btn_filtrar_inventario").click(function() {
+            $("#btn_filtrar_inventario").on("click", function() {
                 this_context_component.filtrarInventario();
                 $("[data-dismiss=modal]").trigger({ type: "click" });
             });

@@ -67,76 +67,106 @@ class InventarioController extends Controller {
         $numero_inventario = ($request->get('numero_inventario') == null) ? "" : $request->get('numero_inventario') ;
         $nombre = ($request->get('nombre') == null) ? "" : $request->get('nombre') ;
         $marca = ($request->get('marca') == null) ? "" : $request->get('marca');
-        $id_oficina = ($request->get('oficina') == "null") ? "" : $request->get('oficina') ;
-        $id_responsable = ($request->get('id_responsable') == "null") ? "" : $request->get('id_responsable') ;
-        $id_usuario = ($request->get('id_usuario') == "null") ? "" : $request->get('id_usuario') ;
-        $funciona_correctamente = ($request->get('funciona_correctamente') == "null") ? "---" : $request->get('funciona_correctamente') ;
-        $observaciones = ($request->get('observaciones') == "null") ? "" : $request->get('observaciones');
-        $id_estado = ($request->get('estado') == "null") ? "" : $request->get('estado');
-        $fecha_ultima_revision = ($request->get('fecha_ultima_revision') == "null") ? "" : $request->get('fecha_ultima_revision');
-        $serial = ($request->get('serial') == "null") ? "" : $request->get('serial');
-        $fecha_aceptacion = ($request->get('fecha_aceptacion') == "null") ? "" : $request->get('fecha_aceptacion');
-        $datos_proveedor = ($request->get('datos_proveedor') == "null") ? "" : $request->get('datos_proveedor');
-        $numero_factura = ($request->get('numero_factura') == "null") ? "" : $request->get('numero_factura');
-        $es_computador =  ($request->get('es_computador') == "null") ? "---" : $request->get('es_computador');
-        
-        if($funciona_correctamente == "---" &&  $es_computador == "---"){
+        $id_oficina = ($request->get('oficina') == null) ? "" : $request->get('oficina') ;
+        $id_responsable = ($request->get('id_responsable') == null) ? "" : $request->get('id_responsable') ;
+        $id_usuario = ($request->get('id_usuario') == null) ? "" : $request->get('id_usuario') ;
+        $funciona_correctamente = ($request->get('funciona_correctamente') == null) ? "" : $request->get('funciona_correctamente') ;
+        $observaciones = ($request->get('observaciones') == null) ? "" : $request->get('observaciones');
+        $id_estado = ($request->get('estado') == null) ? "" : $request->get('estado');
+        $fecha_ultima_revision = ($request->get('fecha_ultima_revision') == null) ? "" : $request->get('fecha_ultima_revision');
+        $serial = ($request->get('serial') == null) ? "" : $request->get('serial');
+        $fecha_aceptacion = ($request->get('fecha_aceptacion') == null) ? "" : $request->get('fecha_aceptacion');
+        $datos_proveedor = ($request->get('datos_proveedor') == null) ? "" : $request->get('datos_proveedor');
+        $numero_factura = ($request->get('numero_factura') == null) ? "" : $request->get('numero_factura');
+        $es_computador =  ($request->get('es_computador') == null) ? "" : $request->get('es_computador');
+        $ip =  ($request->get('ip') == null) ? "" : $request->get('ip');
 
-            $activos = Inventario::where("numero_inventario", "LIKE",  "%{$numero_inventario}%" )
-                    ->where("nombre", "LIKE",  "%{$nombre}%")
-                    ->where("marca_referencia", "LIKE",  "%{$marca}%")
-                    ->where("id_oficina_ubicacion", "LIKE",  "%{$id_oficina}%")
-                    ->where("id_funcionario_responsable", "LIKE",  "%{$id_responsable}%")
-                    ->where("id_usuario", "LIKE",  "%{$id_usuario}%")
-                    //->where("funciona_correctamente", "=",  $funciona_correctamente)
-                    ->where("observaciones", "LIKE",  "%{$observaciones}%")
-                    ->where("id_estado", "LIKE",  "%{$id_estado}%")
-                    ->where("ultima_revision_estado", "LIKE",  "%{$fecha_ultima_revision}%")
-                    ->where("numero_serial", "LIKE",  "%{$serial}%")
-                    ->where("fecha_aceptacion", "LIKE",  "%{$fecha_aceptacion}%")
-                    ->where("datos_contacto_proveedor", "LIKE",  "%{$datos_proveedor}%")
-                    ->where("numero_factura", "LIKE",  "%{$numero_factura}%")
-                    //->where("es_computador", "=",  $es_computador)
-                    ->get();  
-        }else if($funciona_correctamente == "---"){
-            $activos = Inventario::where("numero_inventario", "LIKE",  "%{$numero_inventario}%" )
-                    ->where("nombre", "LIKE",  "%{$nombre}%")
-                    ->where("marca_referencia", "LIKE",  "%{$marca}%")
-                    ->where("id_oficina_ubicacion", "LIKE",  "%{$id_oficina}%")
-                    ->where("id_funcionario_responsable", "LIKE",  "%{$id_responsable}%")
-                    ->where("id_usuario", "LIKE",  "%{$id_usuario}%")
-                    //->where("funciona_correctamente", "=",  $funciona_correctamente)
-                    ->where("observaciones", "LIKE",  "%{$observaciones}%")
-                    ->where("id_estado", "LIKE",  "%{$id_estado}%")
-                    ->where("ultima_revision_estado", "LIKE",  "%{$fecha_ultima_revision}%")
-                    ->where("numero_serial", "LIKE",  "%{$serial}%")
-                    ->where("fecha_aceptacion", "LIKE",  "%{$fecha_aceptacion}%")
-                    ->where("datos_contacto_proveedor", "LIKE",  "%{$datos_proveedor}%")
-                    ->where("numero_factura", "LIKE",  "%{$numero_factura}%")
-                    ->where("es_computador", "=",  $es_computador)
-                    ->get();             
-        }else if($es_computador == "---"){
-            
-            $activos = Inventario::where("numero_inventario", "LIKE",  "%{$numero_inventario}%" )
-                    ->where("nombre", "LIKE",  "%{$nombre}%")
-                    ->where("marca_referencia", "LIKE",  "%{$marca}%")
-                    ->where("id_oficina_ubicacion", "LIKE",  "%{$id_oficina}%")
-                    ->where("id_funcionario_responsable", "LIKE",  "%{$id_responsable}%")
-                    ->where("id_usuario", "LIKE",  "%{$id_usuario}%")
-                    ->where("funciona_correctamente", "=",  $funciona_correctamente)
-                    ->where("observaciones", "LIKE",  "%{$observaciones}%")
-                    ->where("id_estado", "LIKE",  "%{$id_estado}%")
-                    ->where("ultima_revision_estado", "LIKE",  "%{$fecha_ultima_revision}%")
-                    ->where("numero_serial", "LIKE",  "%{$serial}%")
-                    ->where("fecha_aceptacion", "LIKE",  "%{$fecha_aceptacion}%")
-                    ->where("datos_contacto_proveedor", "LIKE",  "%{$datos_proveedor}%")
-                    ->where("numero_factura", "LIKE",  "%{$numero_factura}%")
-                    //->where("es_computador", "=",  $es_computador)
-                    ->get();             
-            
+
+        $builder = Inventario::where("numero_inventario", "<>", "j");
+        if($numero_inventario !== ""){
+            $builder->where("numero_inventario", "LIKE",  "%{$numero_inventario}%" );
         }
-        
+
+        if($nombre !== ""){
+            $builder->where("nombre", "LIKE",  "%{$nombre}%" );
+        }
+
+        if($marca !== ""){
+            $builder->where("marca_referencia", "LIKE",  "%{$marca}%" );
+        }
+
+        if($id_oficina !== ""){
+            $builder->where("id_oficina_ubicacion", "LIKE",  "%{$id_oficina}%" );
+        }
+
+        if($id_responsable !== ""){
+            $builder->where("id_funcionario_responsable", "LIKE",  "%{$id_responsable}%" );
+        }
+
+
+        if($id_usuario !== ""){
+            $builder->where("id_usuario", "LIKE",  "%{$id_usuario}%" );
+        }
+
+        if($funciona_correctamente !== ""){
+            $builder->where("funciona_correctamente", "LIKE",  "%{$funciona_correctamente}%" );
+        }
+
+        if($observaciones !== ""){
+            $builder->where("observaciones", "LIKE",  "%{$observaciones}%" );
+        }
+
+
+        if($id_estado !== ""){
+            $builder->where("id_estado", "LIKE",  "%{$id_estado}%" );
+        }
+
+
+        if($fecha_ultima_revision !== ""){
+            $builder->where("ultima_revision_estado", "LIKE",  "%{$fecha_ultima_revision}%" );
+        }
+
+        if($serial !== ""){
+            $builder->where("numero_serial", "LIKE",  "%{$serial}%" );
+        }
+
+        if($fecha_aceptacion !== ""){
+            $builder->where("fecha_aceptacion", "LIKE",  "%{$fecha_aceptacion}%" );
+        }
+
+        if($datos_proveedor !== ""){
+            $builder->where("datos_contacto_proveedor", "LIKE",  "%{$datos_proveedor}%" );
+        }
+
+        if($numero_factura !== ""){
+            $builder->where("numero_factura", "LIKE",  "%{$numero_factura}%" );
+        }
+
+
+        if($es_computador !== ""){
+            $builder->where("es_computador", "LIKE",  "%{$es_computador}%" );
+        }
+
         $propiedadesComputador = new Propiedades_computadorController();
+        if($ip != ""){
+            $idActivosFiltradosPorIp = $propiedadesComputador->getActivosPorFiltroIP($ip);
+            if($idActivosFiltradosPorIp != null){
+                $builder->whereIn("id", $idActivosFiltradosPorIp  );
+            }
+        }
+
+
+        $activos = $builder->get();
+
+        //to see the sql:
+        // $activos = str_replace(array('?'), array('\'%s\''), $activos);
+        // $activos  = vsprintf($activos, Inventario::where("numero_inventario", TRUE)
+        // ->where("numero_inventario", "LIKE",  "%{$numero_inventario}%" )
+        // ->where("nombre", "LIKE",  "%{$nombre}%")->getBindings());
+        // return $activos;
+        
+
+
         $activosConSusPropiedades = [];
 
         foreach ($activos as $activo) {
