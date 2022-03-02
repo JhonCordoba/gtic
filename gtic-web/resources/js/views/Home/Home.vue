@@ -23,7 +23,7 @@ export default {
             let isAuthenticated = await this.isAuthenticated();
             if (!isAuthenticated) {
                 alert("Debes ingresar tu usuario y contraseña");
-                //window.location.href = '/login';
+                window.location.href = "/login";
             }
         })();
     },
