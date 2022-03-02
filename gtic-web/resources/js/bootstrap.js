@@ -56,6 +56,7 @@ window.axios.interceptors.response.use(
         return response;
     },
     function(error) {
+        console.log(error);
         alert("Debes ingresar tu usuario y contraseña");
         window.location.href = "/login";
         //return Promise.reject(error);
