@@ -85,7 +85,8 @@ class UsersController extends Controller {
         for ($i = 0; $i < sizeof($usuariosArray); $i++ ) {
 
             $masInfoUsuario = InfoUsuarios::find($usuariosArray[$i][0]);
-            $usuariosArray[$i] = array_merge($usuariosArray[$i], [$masInfoUsuario->telefono, $masInfoUsuario->ciudad, $masInfoUsuario->cedula]);
+            if(isset( $masInfoUsuario ) )
+                $usuariosArray[$i] = array_merge($usuariosArray[$i], [$masInfoUsuario->telefono, $masInfoUsuario->ciudad, $masInfoUsuario->cedula]);
         }
 
         return $usuariosArray;
