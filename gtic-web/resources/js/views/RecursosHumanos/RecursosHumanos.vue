@@ -93,7 +93,9 @@ export default {
                         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
                             "content"
                         ),
-                        'Authorization' : `Bearer ${localStorage.getItem("token_auth_api")}`
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token_auth_api"
+                        )}`
                     },
                     type: "POST",
                     url: "users",
@@ -161,7 +163,9 @@ export default {
                         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
                             "content"
                         ),
-                        'Authorization' : `Bearer ${localStorage.getItem("token_auth_api")}`
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token_auth_api"
+                        )}`
                     },
                     type: "PUT",
                     url: "users",
@@ -207,7 +211,7 @@ export default {
     mounted() {
         let this_context_component = this;
 
-        $(document).on('show.bs.modal', '#modalSGT', function(e) {
+        $(document).on("show.bs.modal", "#modalSGT", function(e) {
             if ($(e.relatedTarget).data("id_metodo") === "editar_persona") {
                 this_context_component.mostrarFormularioEditarPersona(e);
             }
